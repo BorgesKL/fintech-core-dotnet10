@@ -16,6 +16,7 @@ O sistema foi desenhado para ser desacoplado. A API não processa o pagamento di
  ` ```mermaid `
  
 graph LR
+    
     Client[Cliente/Swagger] -- POST Request --> API[Payment.API]
     API -- Publica Evento --> Bus[(RabbitMQ)]
     Bus -- Fan-Out --> AntiFraud[AntiFraud.Worker]
