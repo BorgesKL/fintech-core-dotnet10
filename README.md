@@ -64,7 +64,7 @@ Passo 1: Subir a Infraestrutura (Docker)
 Abra o terminal na raiz do projeto (onde está o arquivo docker-compose.yml) e execute:
 Bash
 
-docker-compose up -d
+    docker-compose up -d
 
 Isso iniciará os containers do RabbitMQ e do SQL Server em segundo plano.
 
@@ -75,17 +75,17 @@ Recomenda-se abrir 3 terminais diferentes para visualizar os logs simultâneos:
 Terminal 1 - API (Produtor):
 Bash
 
-dotnet run --project src/Services/Payment.API/FintechCore.Payment.API.csproj
+    dotnet run --project src/Services/Payment.API/FintechCore.Payment.API.csproj
 
 Terminal 2 - Antifraude (Consumidor):
 Bash
 
-dotnet run --project src/Services/AntiFraud.Worker/FintechCore.AntiFraud.Worker.csproj
+    dotnet run --project src/Services/AntiFraud.Worker/FintechCore.AntiFraud.Worker.csproj
 
 Terminal 3 - Contabilidade (Consumidor/Banco):
 Bash
 
-dotnet run --project src/Services/Ledger.Worker/FintechCore.Ledger.Worker.csproj
+    dotnet run --project src/Services/Ledger.Worker/FintechCore.Ledger.Worker.csproj
 
 (Nota: O Ledger contém um inicializador automático que criará o banco FintechDb e a tabela na primeira execução).
 
