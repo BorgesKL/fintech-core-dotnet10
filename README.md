@@ -13,7 +13,7 @@ Este projeto é uma Prova de Conceito (PoC) de uma arquitetura de microsserviço
 
 O sistema foi desenhado para ser desacoplado. A API não processa o pagamento diretamente; ela apenas recebe a intenção e avisa os trabalhadores (Workers) via mensagem.
 
-```mermaid
+ ` ```mermaid `
 graph LR
     Client[Cliente/Swagger] -- POST Request --> API[Payment.API]
     API -- Publica Evento --> Bus[(RabbitMQ)]
