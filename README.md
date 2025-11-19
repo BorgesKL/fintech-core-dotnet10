@@ -1,13 +1,3 @@
-Claro! Abaixo está o arquivo README.md completo e formatado. Ele cobre a arquitetura, os pré-requisitos, as tecnologias usadas e o passo a passo para rodar.
-
-Como salvar:
-
-    Crie um arquivo chamado README.md na raiz do seu projeto (pasta FintechCore).
-
-    Copie o conteúdo abaixo e cole nele.
-
-Markdown
-
 # 🚀 FintechCore - Sistema de Pagamentos Distribuído (.NET 10)
 
 ![.NET](https://img.shields.io/badge/.NET-10.0-purple)
