@@ -12,10 +12,8 @@ Este projeto é uma Prova de Conceito (PoC) de uma arquitetura de microsserviço
 ## 📐 Como Funciona (Arquitetura)
 
 O sistema foi desenhado para ser desacoplado. A API não processa o pagamento diretamente; ela apenas recebe a intenção e avisa os trabalhadores (Workers) via mensagem.
-
- ` ```mermaid `
  
-graph LR
+📊 Graph LR
     
     Client[Cliente/Swagger] -- POST Request --> API[Payment.API]
     API -- Publica Evento --> Bus[(RabbitMQ)]
@@ -23,7 +21,7 @@ graph LR
     Bus -- Fan-Out --> Ledger[Ledger.Worker]
     Ledger -- Grava Transação --> DB[(SQL Server)]
 
-Fluxo de Dados:
+📈 Fluxo de Dados:
 
     Payment.API: Recebe o pedido HTTP, valida e publica o evento PaymentCreatedEvent. Retorna 202 Accepted imediatamente (Fire-and-Forget).
 
@@ -57,14 +55,14 @@ Antes de começar, certifique-se de ter instalado:
 
     Docker Desktop (Essencial para rodar o RabbitMQ e o SQL Server).
 
-🚀 Como Rodar o Projeto
 
-Passo 1: Subir a Infraestrutura (Docker)
+## 🚀 Como Rodar o Projeto
 
-Abra o terminal na raiz do projeto (onde está o arquivo docker-compose.yml) e execute:
-Bash
+### Passo 1: Subir a Infraestrutura (Docker)
+Abra o terminal na raiz do projeto (onde está o arquivo `docker-compose.yml`) e execute:
 
-    docker-compose up -d
+```bash
+docker-compose up -d
 
 Isso iniciará os containers do RabbitMQ e do SQL Server em segundo plano.
 
@@ -89,38 +87,43 @@ Bash
 
 (Nota: O Ledger contém um inicializador automático que criará o banco FintechDb e a tabela na primeira execução).
 
-🧪 Como Testar
 
-    Acesse o Swagger: Abra o navegador no link exibido no Terminal 1 (geralmente http://localhost:5xxx/swagger).
+## 🧪 Como Testar
 
-    Dispare uma Transação: Use o endpoint POST /api/payments com o seguinte JSON:
-    JSON
+1.  **Acesse o Swagger:**
+    Abra o navegador no link exibido no Terminal 1 (geralmente `http://localhost:5xxx/swagger`).
 
-{
-  "fromAccountId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "toAccountId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "amount": 150.00
-}
+2.  **Dispare uma Transação:**
+    Use o endpoint `POST /api/payments` com o seguinte JSON:
 
-Verifique os Resultados:
+    ```json
+    {
+      "fromAccountId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "toAccountId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "amount": 150.00
+    }
+    ```
 
-    API: Deve retornar HTTP 202.
+3.  **Verifique os Resultados:**
+    * **API:** Deve retornar HTTP 202.
+    * **AntiFraud:** Log no terminal: `✅ APROVADO: Transação...`
+    * **Ledger:** Log no terminal: `💰 LEDGER: Transação salva...`
 
-    AntiFraud: Log no terminal: ✅ APROVADO: Transação...
+4.  **Teste de Fraude:**
+    Envie um valor acima de **10000**. O AntiFraud deve logar `🚨 ALERTA`.
 
-    Ledger: Log no terminal: 💰 LEDGER: Transação salva...
+5.  **Verificar no Banco de Dados (Opcional):**
+    Execute este comando no terminal para consultar a tabela direto do Docker:
 
-Teste de Fraude: Envie um valor acima de 10000. O AntiFraud deve logar 🚨 ALERTA.
-
-Verificar no Banco de Dados (Opcional): Execute este comando no terminal para consultar a tabela direto do Docker:
-Bash
-
+    ```bash
     docker exec -it fintech-sqlserver /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "Fintech@2025!" -C -Q "SELECT * FROM FintechDb.dbo.Transactions"
+    ```
 
-📂 Estrutura de Pastas
+---
 
-Plaintext
+## 📂 Estrutura de Pastas
 
+```text
 FintechCore/
 ├── src/
 │   ├── BuildingBlocks/       # Contratos (Eventos) e Configurações comuns
