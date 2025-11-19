@@ -1,0 +1,36 @@
+services:
+  # -----------------------------------------------------------------------
+  # RabbitMQ: O 'Correio' do sistema
+  # Responsável por receber os eventos de pagamento e distribuir para os Workers
+  # -----------------------------------------------------------------------
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: fintech-rabbitmq
+    hostname: fintech-rabbitmq
+    ports:
+      - "5672:5672"   # Porta do protocolo AMQP (usada pelo código C#)
+      - "15672:15672" # Porta do Painel de Gerenciamento (UI no navegador)
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - fintech-network
+
+  # -----------------------------------------------------------------------
+  # SQL Server: O Banco de Dados Transacional
+  # Onde o Ledger.Worker vai salvar o saldo e as transações de forma segura
+  # -----------------------------------------------------------------------
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: fintech-sqlserver
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Fintech@2025! # Senha forte obrigatória pelo SQL Server
+    networks:
+      - fintech-network
+
+networks:
+  fintech-network:
+    driver: bridge
